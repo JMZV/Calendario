@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Calendario.Eventos>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Calendario</h2>
+<div id='loading'></div>
+<div id='calendar'></div>
+
+
+<script>
+
+    window.onload = GetEventos();
+
+    function GetEventos() {
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+
+                locale: 'es',
+                displayEventTime: false,
+                initialDate: '2021-04-01',
+                headerToolbar: {
+                    left: 'prevYear,prev,next,nextYear, today',
+                    center: 'title',
+                    right: 'dayGridMonth,dayGridWeek,dayGridDay listYear'
+                },
+                events: {      
+                    url: 'ics/feed.ics',
+                    format: 'ics',
+                    failure: function () {
+                        document.getElementById('script-warning').style.display = 'block';
+                    }
+                },
+                loading: function (bool) {
+                    document.getElementById('loading').style.display =
+                        bool ? 'block' : 'none';
+                }
+            });
+            calendar.setOption('locale', 'es');
+            calendar.render();
+        });
+    }
+
+</script>
