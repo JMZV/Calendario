@@ -1,47 +1,317 @@
-﻿@model IEnumerable<Calendario.Eventos>
+﻿@model IEnumerable<Calendario.Models.EventosModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Calendario</h2>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @item.start <br />
+
+        </td>
+    </tr>
+}
+
+<div class="modal fade" id="FormularioEventos" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="Codigo">
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label>Título del evento:</label>
+                        <input type="text" id="Titulo" class="form-control" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Fecha de inicio:</label>
+
+                        <div class="input-group" data-autoclose="true">
+                            <input type="date" id="FechaInicio" value="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6" id="TituloHoraInicio">
+                        <label>Hora de inicio:</label>
+
+                        <div class="input-group clockpicker" data-autoclose="true">
+                            <input type="text" id="HoraInicio" value="" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>Fecha de fin:</label>
+
+                        <div class="input-group" data-autoclose="true">
+                            <input type="date" id="FechaFin" value="" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-6" id="TituloHoraFin">
+                        <label>Hora de fin:</label>
+
+                        <div class="input-group clockpicker" data-autoclose="true">
+                            <input type="text" id="HoraFin" value="" class="form-control" autocomplete="off" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descripción:</label>
+                    <textarea id="Descripcion" rows="3" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Color de fondo:</label>
+                    <input type="color" value="#3788D8" id="ColorFondo" class="form-control" style="height:36px;">
+                </div>
+                <div class="form-group">
+                    <label>Color de texto:</label>
+                    <input type="color" value="#ffffff" id="ColorTexto" class="form-control" style="height:36px;">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" id="BotonAgregar" class="btn btn-success">Agregar</button>
+                <button type="button" id="BotonModificar" class="btn btn-success">Modificar</button>
+                <button type="button" id="BotonBorrar" class="btn btn-success">Borrar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id='loading'></div>
 <div id='calendar'></div>
 
 
 <script>
 
-    window.onload = GetEventos();
+    var events = [];
+
+
+
+
+
+    function limpiarFormulario() {
+        $('#Codigo').val('');
+        $('#Titulo').val('');
+        $('#Descripcion').val('');
+        $('#FechaInicio').val('');
+        $('#FechaFin').val('');
+        $('#HoraInicio').val('');
+        $('#HoraFin').val('');
+        $('#ColorFondo').val('#3788D8');
+        $('#ColorTexto').val('#ffffff');
+    }
+
+    function MostrarFormulario(info) {
+
+        //if (info == null) {
+        //    $('#BotonAgregar').show();
+        //    $('#BotonModificar').hide();
+        //    $('#BotonBorrar').hide();
+        //}
+        //else {
+        //    $('#BotonAgregar').hide();
+        //    $('#BotonModificar').show();
+        //    $('#BotonBorrar').show();
+
+        //}
+
+        $('#BotonAgregar').hide();
+        $('#BotonModificar').show();
+        $('#BotonBorrar').show();
+
+
+        $('#Codigo').val(info.event.id);
+        $('#Titulo').val(info.event.title);
+        $('#FechaInicio').val(moment(info.event.start).format("YYYY-MM-DD"));
+        $('#FechaFin').val(moment(info.event.end).format("YYYY-MM-DD"));
+        $('#HoraInicio').val(moment(info.event.start).format("HH:mm"));
+        $('#HoraFin').val(moment(info.event.end).format("HH:mm"));
+        //$('#FechaFin').val(moment(info.event.end).format("YYYY-MM-DD"));
+        $('#Descripcion').val(info.event.id);
+        //$('#HoraInicio').val(info.evnt.start);
+        $("#FormularioEventos").modal();
+    }
+
+
+
+
+
 
     function GetEventos() {
+
+        //$.get('/Calendario/GetEventos').done(function (data) {
+        //        $.each(data, function (index, v) {
+        //            var fechaf = data[index].end;
+        //            var fechai = data[index].end;
+        //            var ff = moment(fechaf).format('DD-MM-YYYY HH:mm');
+        //            var fi = moment(fechai).format('DD-MM-YYYY HH:mm');
+        //            data[index].end = ff;
+        //            data[index].start = fi;
+        //            eventos.push({
+        //                title: v.title,
+        //                start: fi,
+        //                end: ff,
+        //                description: v.description,
+        //                color: v.color
+        //            });
+        //            //alert(Object.values(data));
+
+        //        });
+        //});
         document.addEventListener('DOMContentLoaded', function () {
+            //var eventos = [];
+            //$.get('/Calendario/GetEventos')
+            //    .done(function (data) {
+            //        $.each(data, function (index, v) {
+            //            eventos.push({
+            //                id: v.id,
+            //                title: v.title,
+            //                description: v.description,
+            //                start: moment(v.start),
+            //                end: moment(v.end),
+            //                color: v.color
+            //            });
+
+            //        });
+            //    });
+
+            //$.ajax({
+            //    type: "GET",
+            //    url: "/Calendario/GetEventos",
+            //    success: function (data) {
+            //        $.each(data, function (i, v) {
+            //            events.push({
+            //                title: v.title,
+            //                description: v.description,
+            //                start: moment(v.start),
+            //                end: v.End != null ? moment(v.end) : null,
+            //                color: v.color
+            //            });
+            //            alert('entro al each ' + v.start);
+            //        })
+            //    },
+            //    error: function (error) {
+            //        alert('failed');
+            //    }
+            //})
+
+
             var calendarEl = document.getElementById('calendar');
-
             var calendar = new FullCalendar.Calendar(calendarEl, {
-
+                themeSystem: 'Bootstrap',
                 locale: 'es',
-                displayEventTime: false,
                 initialDate: '2021-04-01',
                 headerToolbar: {
                     left: 'prevYear,prev,next,nextYear, today',
                     center: 'title',
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay listYear'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
-                events: {      
-                    url: 'ics/feed.ics',
-                    format: 'ics',
-                    failure: function () {
-                        document.getElementById('script-warning').style.display = 'block';
-                    }
+                height: 'auto',
+                navLinks: true, // can click day/week names to navigate views
+                editable: true,
+                selectable: true,
+                selectMirror: true,
+                nowIndicator: true,
+
+                //events: function (start, end, timezone, callback) {
+                //    $.ajax({
+                //        url: '/Calendario/GetEventos',
+                //        type: "GET",
+                //        dataType: "JSON",
+
+                //        success: function (result) {
+                //            var events = [];
+
+                //            $.each(result, function (i, data) {
+                //                events.push(
+                //                    {
+                //                        title: data.Title,
+                //                        description: data.description,
+                //                        start: moment(data.start).format('YYYY-MM-DD'),
+                //                        end: moment(data.end).format('YYYY-MM-DD'),
+                //                        color: data.color,
+
+                //                    });
+                //                alert('entro al los eventos ' + moment(data.start).format('DD-MM-YYYY HH:mm'));
+                //            });
+
+                //            callback(events);
+                //        }
+                //    });
+                //},
+
+                events: '@Url.RouteUrl(new{ action="GetEventos", controller="Calendario"})',
+
+
+                dateClick: function (info) {
+                    limpiarFormulario();
+                    $("#FormularioEventos").modal();
+                    $('#BotonModificar').hide();
+                    $('#BotonBorrar').hide();
+                    $('#BotonAgregar').show();
+                    // MostrarFormulario(info);
                 },
-                loading: function (bool) {
-                    document.getElementById('loading').style.display =
-                        bool ? 'block' : 'none';
-                }
+
+                eventClick: function (info) {
+                    MostrarFormulario(info);
+                },
             });
-            calendar.setOption('locale', 'es');
+
             calendar.render();
         });
+
+
     }
+    window.onload = GetEventos();
 
 </script>
+<style>
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+
+    #script-warning {
+        display: none;
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        padding: 0 10px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 12px;
+        color: red;
+    }
+
+    #loading {
+        display: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    #calendar {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 10px;
+    }
+</style>

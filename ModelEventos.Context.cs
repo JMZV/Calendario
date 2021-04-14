@@ -26,7 +26,5 @@ namespace Calendario
         }
     
         public virtual DbSet<Eventos> Eventos { get; set; }
-
-        public System.Data.Entity.DbSet<Calendario.Models.EventosModel> EventosModels { get; set; }
     }
 }

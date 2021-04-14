@@ -16,7 +16,9 @@ namespace Calendario
     {
         public int Id { get; set; }
         public string Titulo { get; set; }
-        public string Inicio { get; set; }
-        public string Fin { get; set; }
+        public System.DateTime Inicio { get; set; }
+        public System.DateTime Fin { get; set; }
+        public string Descripcion { get; set; }
+        public string Color { get; set; }
     }
 }
