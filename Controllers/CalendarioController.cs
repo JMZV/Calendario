@@ -66,8 +66,49 @@ namespace Calendario.Controllers
 
         }
 
+        [HttpPost]
+        public JsonResult SetEventos(Eventos e)
+        {
+        var status = false;
 
+            if (e.Id > 0)
+            {
+                //actualiza evento
+                var v = db.Eventos.Where(a => a.Id == e.Id).FirstOrDefault();
+                if (v != null)
+                {
+                    v.Titulo = e.Titulo;
+                    v.Inicio = e.Inicio;
+                    v.Fin = e.Fin;
+                    v.Descripcion = e.Descripcion;
+                    v.Color = e.Color;
+                }
+            }
+            else
+            {
+                //nuevo evento
+                db.Eventos.Add(e);
+            }
 
+            db.SaveChanges();
+
+            return new JsonResult { Data = new { status = status } };
+        }
+
+        [HttpPost]
+        public JsonResult DelEventos(int id)
+        {
+            var status = false;
+
+            var v = db.Eventos.Where(a => a.Id == id).FirstOrDefault();
+            if (v != null)
+            {
+                db.Eventos.Remove(v);
+                db.SaveChanges();
+            }
+            
+            return new JsonResult { Data = new { status = status } };
+        }
 
 
 

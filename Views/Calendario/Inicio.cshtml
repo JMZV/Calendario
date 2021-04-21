@@ -77,7 +77,7 @@
             <div class="modal-footer">
 
                 <button type="button" id="BotonAgregar" class="btn btn-success">Agregar</button>
-                <button type="button" id="BotonModificar" class="btn btn-success">Modificar</button>
+                <button type="button" id="BotonModificar" class="btn btn-success">Guardar</button>
                 <button type="button" id="BotonBorrar" class="btn btn-success">Borrar</button>
                 <button type="button" class="btn btn-success" data-dismiss="modal">Cancelar</button>
 
@@ -114,20 +114,27 @@
     <script>
 
         function MostrarFormulario(info) {
-            $('#BotonAgregar').hide();
-            $('#BotonModificar').show();
-            $('#BotonBorrar').show();
-            $('#TituloE').text(info.id + " " + info.title + " " + info.start);
-            $('#Titulo').val(info.title);
-            $('#FechaInicio').val(moment(info.start).format("YYYY-MM-DD"));
-            $('#FechaFin').val(moment(info.end).format("YYYY-MM-DD"));
-            $('#HoraInicio').val(moment(info.start).format("HH:mm"));
-            $('#HoraFin').val(moment(info.end).format("HH:mm"));
-            $('#Descripcion').val(info.description);
-            $('#Color').val(info.color);
+                    $('#BotonAgregar').hide();
+                    $('#BotonBorrar').hide();
+                    $('#BotonModificar').show();
+                    
+                    if (info.id > 0) {
+                        $('#BotonBorrar').show();
+                    }
 
-            $("#FormularioEventos").modal();
-        };
+                    $('#Codigo').val(info.id);
+                    $('#TituloE').text(info.id + " " + info.title + " " + info.start);
+                    $('#Titulo').val(info.title);
+                    $('#FechaInicio').val(moment(info.start).format("YYYY-MM-DD"));
+                    $('#FechaFin').val(moment(info.end).format("YYYY-MM-DD"));
+                    $('#HoraInicio').val(moment(info.start).format("HH:mm"));
+                    $('#HoraFin').val(moment(info.end).format("HH:mm"));
+                    $('#Descripcion').val(info.description);
+                    $('#Color').val(info.color);
+
+                    $("#FormularioEventos").modal();
+                    
+                };
 
         function Cal(evento) {
 
@@ -141,6 +148,79 @@
             //$description.append($('<p/>').html('<b>Description:</b>' + event.description));
             //$('#myModal #pDetails').empty().html($description);
             //$('#myModal').modal();
+        };
+
+
+        $('#BotonModificar').click(function () {
+
+            let registro = EventoFormulario();
+            //alert('registro ' + registro);
+            
+            SetEventos(registro);
+            $("#FormularioEventos").modal('hide');
+            location.reload();
+        });
+
+
+        $('#BotonBorrar').click(function () {
+
+            let registro = EventoFormulario();
+            var opcion = confirm("Desea borrar evento " + registro.titulo + " " + registro.descripcion);
+            if (opcion == true) {
+                //alert('evento borrado');
+                DelEventos(registro.id);
+            } else {
+                //alert('evento sin cambios');
+            };
+
+            $("#FormularioEventos").modal('hide');
+            location.reload();
+
+        });
+
+
+        function DelEventos(n) {
+            $.ajax({
+                type: "POST",
+                url: '/Calendario/DelEventos',
+                data: n,
+                success: function (n) {
+                    alert('Sendt ');
+                },
+                error: function (error) {
+                    alert('Failed borrado '+n);
+                }
+            })
+
+        };
+
+        function SetEventos(eve) {
+
+            //alert('envia json post ' + eve);
+            $.ajax({
+                type: "POST",
+                url: '/Calendario/SetEventos',
+                data: eve,
+                success: function (eve) {
+                    alert('Changed ');
+                },
+                error: function (error) {
+                    alert('Failed ' + error);
+                }
+            })
+
+        };
+
+        function EventoFormulario() {
+            let Evento = {
+                id: $('#Codigo').val(),
+                titulo: $('#Titulo').val(),
+                descripcion: $('#Descripcion').val(),
+                inicio: $('#FechaInicio').val() + ' ' + $('#HoraInicio').val(),
+                fin: $('#FechaFin').val() + ' ' + $('#HoraFin').val(),
+                color: $('#Color').val(),
+            };
+            return Evento;
         };
 
         function GetEventos() {
@@ -190,6 +270,16 @@
                     events: eventos,
                     eventClick: function (calEvent, jsEvent, view) {
                         Cal(calEvent);
+                    },
+
+                    dayClick: function (calEvent, date) {
+                        EventoNuevo = {
+                            title: 'Nuevo Evento',
+                            start: calEvent,
+                            end: calEvent
+                        }
+                        //alert(calEvent);
+                        Cal(EventoNuevo);
                     }
 
 
