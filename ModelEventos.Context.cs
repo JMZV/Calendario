@@ -25,6 +25,6 @@ namespace Calendario
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Eventos> Eventos { get; set; }
+        public virtual DbSet<Eventoscalendario> Eventoscalendario { get; set; }
     }
 }

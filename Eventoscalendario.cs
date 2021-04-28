@@ -12,7 +12,7 @@ namespace Calendario
     using System;
     using System.Collections.Generic;
     
-    public partial class Eventos
+    public partial class Eventoscalendario
     {
         public int Id { get; set; }
         public string Titulo { get; set; }

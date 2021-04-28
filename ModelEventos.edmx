@@ -5,26 +5,26 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="portafolioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Eventos">
+        <EntityType Name="Eventoscalendario">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Titulo" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Inicio" Type="date" Nullable="false" />
-          <Property Name="Fin" Type="date" Nullable="false" />
+          <Property Name="Inicio" Type="smalldatetime" Nullable="false" />
+          <Property Name="Fin" Type="smalldatetime" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="Color" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="portafolioModelStoreContainer">
-          <EntitySet Name="Eventos" EntityType="Self.Eventos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Eventoscalendario" EntityType="Self.Eventoscalendario" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="portafolioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Eventos">
+        <EntityType Name="Eventoscalendario">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -36,7 +36,7 @@
           <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityContainer Name="portafolioEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Eventos" EntityType="Self.Eventos" />
+          <EntitySet Name="Eventoscalendario" EntityType="Self.Eventoscalendario" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -44,9 +44,9 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="portafolioModelStoreContainer" CdmEntityContainer="portafolioEntities">
-          <EntitySetMapping Name="Eventos">
-            <EntityTypeMapping TypeName="portafolioModel.Eventos">
-              <MappingFragment StoreEntitySet="Eventos">
+          <EntitySetMapping Name="Eventoscalendario">
+            <EntityTypeMapping TypeName="portafolioModel.Eventoscalendario">
+              <MappingFragment StoreEntitySet="Eventoscalendario">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Titulo" ColumnName="Titulo" />
                 <ScalarProperty Name="Inicio" ColumnName="Inicio" />

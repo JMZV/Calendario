@@ -17,7 +17,7 @@ namespace Calendario.Controllers
         // GET: Eventos
         public ActionResult Index()
         {
-            return View(db.Eventos.ToList());
+            return View(db.Eventoscalendario.ToList());
         }
 
         // GET: Eventos/Details/5
@@ -27,7 +27,7 @@ namespace Calendario.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Eventos eventos = db.Eventos.Find(id);
+            Eventoscalendario eventos = db.Eventoscalendario.Find(id);
             if (eventos == null)
             {
                 return HttpNotFound();
@@ -46,11 +46,11 @@ namespace Calendario.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Titulo,Inicio,Fin")] Eventos eventos)
+        public ActionResult Create([Bind(Include = "Id,Titulo,Inicio,Fin")] Eventoscalendario eventos)
         {
             if (ModelState.IsValid)
             {
-                db.Eventos.Add(eventos);
+                db.Eventoscalendario.Add(eventos);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -65,7 +65,7 @@ namespace Calendario.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Eventos eventos = db.Eventos.Find(id);
+            Eventoscalendario eventos = db.Eventoscalendario.Find(id);
             if (eventos == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace Calendario.Controllers
         // más detalles, vea https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Titulo,Inicio,Fin")] Eventos eventos)
+        public ActionResult Edit([Bind(Include = "Id,Titulo,Inicio,Fin")] Eventoscalendario eventos)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace Calendario.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Eventos eventos = db.Eventos.Find(id);
+            Eventoscalendario eventos = db.Eventoscalendario.Find(id);
             if (eventos == null)
             {
                 return HttpNotFound();
@@ -109,8 +109,8 @@ namespace Calendario.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Eventos eventos = db.Eventos.Find(id);
-            db.Eventos.Remove(eventos);
+            Eventoscalendario eventos = db.Eventoscalendario.Find(id);
+            db.Eventoscalendario.Remove(eventos);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

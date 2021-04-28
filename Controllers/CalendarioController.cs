@@ -23,7 +23,7 @@ namespace Calendario.Controllers
         public ActionResult Index()
         {
             
-            var Eventos = db.Eventos.Select(q => new EventosModel
+            var Eventos = db.Eventoscalendario.Select(q => new EventosModel
             {
                 id = q.Id,
                 title = q.Titulo,
@@ -41,7 +41,7 @@ namespace Calendario.Controllers
 
         public JsonResult GetEventos()
         {
-            var Eventos = db.Eventos.Select(q => new EventosModel
+            var Eventos = db.Eventoscalendario.Select(q => new EventosModel
             {
                 id = q.Id,
                 title = q.Titulo,
@@ -67,14 +67,14 @@ namespace Calendario.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetEventos(Eventos e)
+        public JsonResult SetEventos(Eventoscalendario e)
         {
         var status = false;
 
             if (e.Id > 0)
             {
                 //actualiza evento
-                var v = db.Eventos.Where(a => a.Id == e.Id).FirstOrDefault();
+                var v = db.Eventoscalendario.Where(a => a.Id == e.Id).FirstOrDefault();
                 if (v != null)
                 {
                     v.Titulo = e.Titulo;
@@ -87,7 +87,7 @@ namespace Calendario.Controllers
             else
             {
                 //nuevo evento
-                db.Eventos.Add(e);
+                db.Eventoscalendario.Add(e);
             }
 
             db.SaveChanges();
@@ -96,14 +96,16 @@ namespace Calendario.Controllers
         }
 
         [HttpPost]
-        public JsonResult DelEventos(int id)
+
+        //public JsonResult DelEventos(int id)
+        public JsonResult DelEventos(Eventoscalendario e)
         {
             var status = false;
 
-            var v = db.Eventos.Where(a => a.Id == id).FirstOrDefault();
+            var v = db.Eventoscalendario.Where(a => a.Id == e.Id).FirstOrDefault();
             if (v != null)
             {
-                db.Eventos.Remove(v);
+                db.Eventoscalendario.Remove(v);
                 db.SaveChanges();
             }
             

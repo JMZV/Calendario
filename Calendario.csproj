@@ -131,7 +131,7 @@
     <Compile Include="Controllers\CalendarioController.cs" />
     <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Eventos.cs">
+    <Compile Include="Eventoscalendario.cs">
       <DependentUpon>ModelEventos.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
